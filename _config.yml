@@ -1,0 +1,2 @@
+# GitHub Pages / Jekyll : URLs propres sans extension .html
+permalink: /:basename
