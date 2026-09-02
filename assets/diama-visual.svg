@@ -1,0 +1,73 @@
+<svg viewBox="0 0 370 425" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dvTitle">
+<title id="dvTitle">Le fleuve et le barrage de Diama</title>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#eef6f4"/>
+    <stop offset="1" stop-color="#d7e9ec"/>
+  </linearGradient>
+  <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#bcd8e4"/>
+    <stop offset="1" stop-color="#9dc6d8"/>
+  </linearGradient>
+  <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#e9c069"/>
+    <stop offset="1" stop-color="#c8891a" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+
+<rect width="370" height="425" fill="url(#sky)"/>
+
+<!-- sun glow, discreet -->
+<circle cx="275" cy="105" r="95" fill="url(#sun)" opacity="0.55"/>
+<circle cx="275" cy="105" r="30" fill="#e9c069" opacity="0.5"/>
+
+<!-- soft riverbank vegetation, left, brings in the leaf green -->
+<path d="M0 262c22-9 46-11 70-4 18 5 30 2 40-6v8c-12 9-26 11-42 6-24-7-46-5-68 4z" fill="#2e6b32" opacity="0.28"/>
+
+<!-- wheat stalks silhouette, right, echoes the logo mark -->
+<g opacity="0.5" fill="none" stroke="#c8891a" stroke-width="2" stroke-linecap="round">
+  <path d="M320 210c2-40 10-72 14-96"/>
+  <path d="M334 128c6-4 14-3 18 2"/>
+  <path d="M330 142c6-4 14-3 18 2"/>
+  <path d="M327 156c-6-4-14-3-18 2"/>
+  <path d="M324 170c6-4 14-3 18 2"/>
+  <path d="M322 184c-6-4-14-3-18 2"/>
+  <path d="M321 198c6-3 13-2 17 2"/>
+</g>
+
+<!-- river band -->
+<rect x="0" y="255" width="370" height="170" fill="url(#water)"/>
+<path d="M0 258c40 10 80-10 120 0s80 10 120 0 80-10 130 0v-14c-50-10-90 10-130 0s-80-10-120 0-80 10-120 0z" fill="#eef6f4" opacity="0.5"/>
+
+<!-- Diama dam silhouette, arches echo the logo mark -->
+<g fill="#3a5560" opacity="0.85">
+  <rect x="20" y="256" width="330" height="7" rx="1.5"/>
+  <path d="M35 263v34c0 0 10 8 20 0v-34z" opacity="0"/>
+  <g>
+    <rect x="34" y="263" width="6" height="40"/>
+    <rect x="64" y="263" width="6" height="40"/>
+    <rect x="94" y="263" width="6" height="40"/>
+    <rect x="124" y="263" width="6" height="40"/>
+    <rect x="154" y="263" width="6" height="40"/>
+    <rect x="184" y="263" width="6" height="40"/>
+    <rect x="214" y="263" width="6" height="40"/>
+    <rect x="244" y="263" width="6" height="40"/>
+    <rect x="274" y="263" width="6" height="40"/>
+    <rect x="304" y="263" width="6" height="40"/>
+  </g>
+  <path d="M34 296c30 12 260 12 276 0v7c-16 12-246 12-276 0z"/>
+</g>
+
+<!-- soft water ripples below the dam -->
+<g stroke="#f4faf9" stroke-width="2" fill="none" opacity="0.55" stroke-linecap="round">
+  <path d="M20 330c40 10 80-10 120 0s80 10 120 0 60-8 90 0"/>
+  <path d="M10 360c40 10 80-10 120 0s80 10 120 0 70-8 100 0"/>
+  <path d="M0 392c40 10 80-10 120 0s80 10 120 0 80-10 130 0"/>
+</g>
+
+<!-- two discreet birds -->
+<g stroke="#2c4650" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5">
+  <path d="M110 70c6-6 12-6 18 0 6-6 12-6 18 0"/>
+  <path d="M170 96c5-5 10-5 15 0 5-5 10-5 15 0"/>
+</g>
+</svg>

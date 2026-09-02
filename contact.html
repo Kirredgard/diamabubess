@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contacts — Diama bu bess</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head>
+<body><header class="header"><div class="container nav"><a class="brand" href="index.html">
+<span class="logo"><img src="assets/logo22-mark.png" alt="Logo Diama bu bess"></span>
+<span class="brand-copy"><b><span>Diama</span> <i>bu</i> <strong>bess</strong></b>
+<small><em></em>ak Abdourahmane FALL<em></em></small></span>
+</a><button class="menu" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button><div class="nav-panel"><nav><a href="index.html">Accueil</a><a href="vision.html">Vision</a><a href="mouvement.html">Le Projet</a><a href="actualites.html">Actualités</a><a class="active" href="contact.html">Contacts</a></nav><a class="join" href="adhesion.html"><svg class="join-icon" viewBox="0 0 24 24" aria-hidden="true">
+<path d="M16 21v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.7A3.7 3.7 0 0 0 3 19.2V21"/>
+<circle cx="9.5" cy="7.5" r="3.5"/>
+<path d="M17 11a3 3 0 1 0-1.1-5.8M21 20v-1.4a3.2 3.2 0 0 0-2.4-3.1"/>
+</svg><span>Nous rejoindre</span></a></div>
+<div class="nav-backdrop"></div></div></header>
+
+<main>
+<section class="page-head"><div class="container"><p class="eyebrow"><span></span> Contacts</p><h1>Échangeons <em>avec vous.</em></h1><p>Une question, une proposition ou l'envie de participer à la nouvelle ère pour Diama ? Écrivez-nous ou appelez directement le mouvement.</p></div></section>
+
+<section class="page-section" id="contact"><div class="container contact-shell">
+
+  <div class="info-card-classic">
+    <span class="seal">✦</span>
+    <h2>Diama bu bess</h2>
+    <p>Nous sommes à l'écoute des habitants, des jeunes, des femmes, des acteurs économiques, des associations et de toutes les forces vives de la commune.</p>
+
+    <div class="info-rows">
+      <div class="info-row"><i>⌖</i><div><small>Adresse</small><strong>Diama — Saint-Louis, Sénégal</strong></div></div>
+      <div class="info-row"><i>☎</i><div><small>Téléphones</small><strong class="contact-phone-list"><a href="tel:+221775878004">+221 77 587 80 04</a><a href="tel:+221776304089">+221 77 630 40 89</a><a href="tel:+221776504480">+221 77 650 44 80</a></strong></div></div>
+      <div class="info-row"><i>◷</i><div><small>Permanence</small><strong>Lundi – Samedi, 9h – 18h</strong></div></div>
+    </div>
+
+    <div class="info-cta">
+      <a class="btn primary" href="tel:+221775878004">Appeler maintenant <span>→</span></a>
+      <a class="btn light" href="adhesion.html">Rejoindre le mouvement</a>
+    </div>
+  </div>
+
+  <div class="form-card-classic">
+    <h2>Envoyez-nous un message</h2>
+    <p class="cf-lead">Nous vous répondons dans les meilleurs délais, du lundi au samedi.</p>
+
+    <form id="contactForm" novalidate>
+      <div id="cformWrap">
+
+        <div class="jf-row">
+          <div class="jf-field"><label>Nom complet <small>*</small></label><input type="text" id="cNom" placeholder="Votre prénom et nom" required></div>
+          <div class="jf-field">
+            <label>Téléphone <small>*</small></label>
+            <div class="phone-combo" id="cPhoneCombo">
+              <div class="jf-phone">
+                <button type="button" class="phone-trigger" id="cPhoneTrigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="flag-ico" id="cPhoneFlag"><img src="https://flagcdn.com/sn.svg" alt="Sénégal"></span><span id="cPhoneCode">+221</span><i class="car">▾</i>
+                </button>
+                <input type="tel" id="cTel" placeholder="77 000 00 00" required>
+              </div>
+              <div class="phone-panel" id="cPhonePanel" role="listbox" aria-label="Choisir un indicatif">
+                <input type="text" class="phone-search" id="cPhoneSearch" placeholder="Rechercher un pays…" autocomplete="off">
+                <div id="cPhoneList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jf-row">
+          <div class="jf-field"><label>Adresse e-mail <span class="jf-hint">Optionnel</span></label><input type="email" id="cEmail" placeholder="vous@exemple.com"></div>
+          <div class="jf-field">
+            <label>Sujet</label>
+            <select class="jf-select" id="cSujet">
+              <option value="Question générale" selected>Question générale</option>
+              <option value="Proposition ou suggestion">Proposition ou suggestion</option>
+              <option value="Participer à une action">Participer à une action</option>
+              <option value="Presse / médias">Presse / médias</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="jf-field" style="margin-bottom:0">
+          <label>Message <small>*</small></label>
+          <textarea id="cMessage" rows="4" placeholder="Écrivez votre message ici…" required></textarea>
+        </div>
+
+        <p class="jf-error" id="cFormErr">Merci de renseigner votre nom, votre téléphone et votre message.</p>
+
+        <p class="jf-consent">En envoyant ce message, vous acceptez d'être recontacté(e) par Diama bu bess. Vos informations restent confidentielles.</p>
+
+        <button type="button" id="cSubmitBtn" class="jf-submit">Envoyer le message <span>→</span></button>
+
+      </div>
+
+      <div class="jf-success" id="cSuccessWrap" style="display:none">
+        <div class="ok">✓</div>
+        <h2>Message envoyé !</h2>
+        <p>Merci <strong id="cSuccessName">—</strong>, votre message a bien été transmis à l'équipe Diama bu bess. Nous revenons vers vous très vite.</p>
+        <a class="btn primary" href="index.html" style="margin-top:8px">Retour à l'accueil <span>→</span></a>
+      </div>
+    </form>
+  </div>
+
+</div></section>
+</main>
+
+<footer class="footer"><div class="container footer-grid"><div><div class="footer-brand"><span class="logo"><img src="assets/logo22-mark.png" alt="Logo Diama bu bess"></span><div><b>Diama bu bess</b><small>ak Abdourahmane FALL</small></div></div><p>Ensemble pour une Diama plus forte, plus juste et tournée vers l'avenir.</p><div class="footer-social"> <a href="#" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.6 21v-7.2h2.4l.4-2.8h-2.8v-1.8c0-.8.2-1.4 1.4-1.4h1.5V5.3C15.9 5.2 15 5.1 14 5.1c-2.1 0-3.6 1.3-3.6 3.7V11H7.9v2.8H10.4V21Z"></path></svg></a> <a href="#" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="3.7"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg></a> <a href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.03 3C7.05 3 3 7.05 3 12.03c0 1.62.43 3.2 1.24 4.6L3 21l4.5-1.18a9 9 0 0 0 4.53 1.22h.01c4.98 0 9.03-4.05 9.03-9.03C21.06 7.05 17.01 3 12.03 3Zm0 16.4a7.4 7.4 0 0 1-3.77-1.03l-.27-.16-2.67.7.71-2.6-.17-.27a7.38 7.38 0 0 1-1.13-3.94c0-4.08 3.32-7.4 7.4-7.4 4.08 0 7.4 3.32 7.4 7.4 0 4.08-3.32 7.4-7.4 7.4Zm4.06-5.54c-.22-.11-1.3-.64-1.5-.72-.2-.07-.35-.11-.5.11-.15.22-.57.72-.7.86-.13.15-.26.16-.48.06-.22-.11-.94-.35-1.79-1.11-.66-.59-1.11-1.32-1.24-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.21-.69-1.66-.18-.43-.37-.37-.5-.38-.13-.01-.28-.01-.43-.01-.15 0-.39.06-.6.28-.2.22-.79.77-.79 1.87 0 1.1.81 2.17.92 2.32.11.15 1.6 2.44 3.87 3.42.54.23.96.37 1.29.48.54.17 1.03.15 1.42.09.43-.06 1.3-.53 1.49-1.05.18-.51.18-.95.13-1.05-.05-.1-.2-.16-.42-.27Z"></path></svg></a> <a href="#" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="5.5" width="19" height="13" rx="4"></rect><path d="M10.5 9.3v5.4l4.6-2.7-4.6-2.7Z" fill="currentColor" stroke="none"></path></svg></a> </div></div><div><h4>Navigation</h4><a href="index.html">Accueil</a><a href="vision.html">Vision</a><a href="mouvement.html">Le Projet</a><a href="actualites.html">Actualités</a></div><div><h4>Contact</h4><p>Diama — Saint-Louis, Sénégal</p><a href="tel:+221775878004">+221 77 587 80 04</a><a href="tel:+221776304089">+221 77 630 40 89</a><a href="tel:+221776504480">+221 77 650 44 80</a></div></div><div class="container footer-bottom"><span>© 2026 Diama bu bess — Tous droits réservés.</span><a href="index.html">Accueil ↑</a></div></footer>
+<script src="script.js"></script>
+<script>
+(function(){
+  var PHONE_COUNTRIES = [
+    {code:'+221', iso:'sn', name:'Sénégal'},
+    {code:'+33',  iso:'fr', name:'France'},
+    {code:'+34',  iso:'es', name:'Espagne'},
+    {code:'+39',  iso:'it', name:'Italie'},
+    {code:'+1',   iso:'us', name:'États-Unis'},
+    {code:'+1',   iso:'ca', name:'Canada'},
+    {code:'+44',  iso:'gb', name:'Royaume-Uni'},
+    {code:'+49',  iso:'de', name:'Allemagne'},
+    {code:'+32',  iso:'be', name:'Belgique'},
+    {code:'+41',  iso:'ch', name:'Suisse'},
+    {code:'+351', iso:'pt', name:'Portugal'},
+    {code:'+222', iso:'mr', name:'Mauritanie'},
+    {code:'+223', iso:'ml', name:'Mali'},
+    {code:'+224', iso:'gn', name:'Guinée'},
+    {code:'+225', iso:'ci', name:"Côte d'Ivoire"},
+    {code:'+220', iso:'gm', name:'Gambie'},
+    {code:'+212', iso:'ma', name:'Maroc'},
+    {code:'+971', iso:'ae', name:'Émirats arabes unis'},
+    {code:'+966', iso:'sa', name:'Arabie saoudite'}
+  ];
+  function flagImg(c){ return '<img src="https://flagcdn.com/'+c.iso+'.svg" alt="'+c.name+'">'; }
+
+  var trigger = document.getElementById('cPhoneTrigger');
+  var panel = document.getElementById('cPhonePanel');
+  var list = document.getElementById('cPhoneList');
+  var search = document.getElementById('cPhoneSearch');
+  var flagEl = document.getElementById('cPhoneFlag');
+  var codeEl = document.getElementById('cPhoneCode');
+
+  function renderList(filter){
+    var f = (filter || '').trim().toLowerCase();
+    var items = PHONE_COUNTRIES.filter(function(c){
+      return !f || c.name.toLowerCase().indexOf(f) !== -1 || c.code.indexOf(f) !== -1;
+    });
+    list.innerHTML = '';
+    if(!items.length){
+      var empty = document.createElement('div');
+      empty.className = 'phone-empty';
+      empty.textContent = 'Aucun pays trouvé';
+      list.appendChild(empty);
+      return;
+    }
+    items.forEach(function(c){
+      var row = document.createElement('div');
+      row.className = 'phone-opt';
+      row.setAttribute('role','option');
+      row.innerHTML = '<span class="flag-ico">'+flagImg(c)+'</span><b>'+c.name+'</b><span>'+c.code+'</span>';
+      row.addEventListener('click', function(){
+        flagEl.innerHTML = flagImg(c);
+        codeEl.textContent = c.code;
+        panel.classList.remove('open');
+        trigger.setAttribute('aria-expanded','false');
+      });
+      list.appendChild(row);
+    });
+  }
+
+  trigger.addEventListener('click', function(e){
+    e.stopPropagation();
+    var willOpen = !panel.classList.contains('open');
+    panel.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    if(willOpen){ search.value=''; renderList(''); search.focus(); }
+  });
+  search.addEventListener('input', function(){ renderList(search.value); });
+  search.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){ panel.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); });
+  renderList('');
+
+  document.getElementById('cSubmitBtn').addEventListener('click', function(){
+    var nom = document.getElementById('cNom').value.trim();
+    var tel = document.getElementById('cTel').value.trim();
+    var msg = document.getElementById('cMessage').value.trim();
+    var err = document.getElementById('cFormErr');
+
+    if(!nom || !tel || !msg){
+      err.classList.add('show');
+      err.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    err.classList.remove('show');
+
+    document.getElementById('cSuccessName').textContent = nom;
+    document.getElementById('cformWrap').style.display = 'none';
+    document.getElementById('cSuccessWrap').style.display = 'block';
+    document.getElementById('cSuccessWrap').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
+</script>
+</body></html>
