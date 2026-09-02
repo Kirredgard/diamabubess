@@ -1,2 +1,4 @@
-# GitHub Pages / Jekyll : URLs propres sans extension .html
+# GitHub Pages / Jekyll
+# Dépôt de type projet : https://kirredgard.github.io/diamabubess/
+baseurl: /diamabubess
 permalink: /:basename
