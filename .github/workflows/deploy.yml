@@ -21,7 +21,8 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           uploads: |
-            ./ => ./www/
+          uploads: |
+  ./ => ./www/
           ignore: |
             .git/**
             .github/**
