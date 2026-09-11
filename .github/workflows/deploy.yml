@@ -13,17 +13,26 @@ jobs:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
-      - name: Envoyer le site vers OVH
-        uses: Dylan700/sftp-upload-action@v1.2.4
-        with:
-          server: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USER }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          port: 22
-          uploads: |
-            ./ => ./diamabubess/
-          ignore: |
-            .git/**
-            .github/**
-            README.md
-          delete: false
+      - name: Installer lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Déployer vers OVH
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          lftp -u "$SFTP_USER","$SFTP_PASSWORD" "sftp://$SFTP_HOST:22" <<'EOF'
+          set sftp:auto-confirm yes
+          set net:max-retries 2
+          set net:timeout 20
+          cd /home/diamabv/diamabubess
+          mirror --reverse --verbose \
+            --exclude-glob .git/** \
+            --exclude-glob .github/** \
+            --exclude-glob README.md \
+            ./ .
+          bye
+          EOF
