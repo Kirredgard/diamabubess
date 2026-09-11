@@ -439,3 +439,13 @@ body.nav-open{overflow:hidden}
 /* Actualité Polo sur l'accueil + vidéo YouTube Thiléne */
 .home-news-section{padding-top:42px;padding-bottom:46px;background:#f7faf9}.home-news-section .news-list-heading{margin-bottom:22px}.home-news-card{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);min-height:270px;border:1px solid var(--line);border-radius:15px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(9,45,58,.055);text-decoration:none;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}.home-news-card:hover{transform:translateY(-4px);box-shadow:0 17px 35px rgba(9,45,58,.11);border-color:#c9ddd4}.home-news-media{min-height:270px;background:#061b24}.home-news-media .news-card-video-placeholder{min-height:270px}.home-news-body{padding:27px 29px;display:flex;flex-direction:column;justify-content:center}.home-news-body h3{font:800 25px/1.2 "Manrope";color:var(--navy);margin:0 0 11px;letter-spacing:-.4px}.home-news-body p{font-size:11.5px;line-height:1.65;color:var(--muted);margin:0}.thilene-video-card .youtube-frame-wrap{position:relative;width:100%;aspect-ratio:16/9}.thilene-video-card .youtube-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 @media(max-width:700px){.home-news-card{grid-template-columns:1fr}.home-news-media{min-height:220px}.home-news-media .news-card-video-placeholder{min-height:220px}.home-news-body{padding:21px}.home-news-body h3{font-size:21px}}
+
+
+/* Cohérence actualités — miniatures vidéo YouTube */
+.news-card-image{position:relative}
+.news-card-image > img{display:block;width:100%;height:100%;object-fit:cover}
+.news-card-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;display:grid;place-items:center;padding-left:3px;background:#fff;color:var(--green);font-size:20px;box-shadow:0 10px 25px rgba(0,0,0,.22)}
+.home-news-media{position:relative;overflow:hidden}
+.home-news-media > img{display:block;width:100%;height:100%;min-height:270px;object-fit:cover}
+.home-news-media .news-card-badge{position:absolute;top:14px;left:14px;padding:7px 10px;border-radius:999px;background:#fff;color:var(--green);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+@media(max-width:700px){.home-news-media > img{min-height:220px}}
