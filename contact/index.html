@@ -81,6 +81,8 @@
           <textarea id="cMessage" rows="4" placeholder="Écrivez votre message ici…" required></textarea>
         </div>
 
+        <input type="text" id="cWebsite" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+
         <p class="jf-error" id="cFormErr">Merci de renseigner votre nom, votre téléphone et votre message.</p>
 
         <p class="jf-consent">En envoyant ce message, vous acceptez d'être recontacté(e) par Diama bu bess. Vos informations restent confidentielles.</p>
@@ -175,23 +177,62 @@
   document.addEventListener('click', function(){ panel.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); });
   renderList('');
 
-  document.getElementById('cSubmitBtn').addEventListener('click', function(){
+  document.getElementById('cSubmitBtn').addEventListener('click', async function(){
+    var btn = this;
     var nom = document.getElementById('cNom').value.trim();
     var tel = document.getElementById('cTel').value.trim();
+    var email = document.getElementById('cEmail').value.trim();
+    var sujet = document.getElementById('cSujet').value;
     var msg = document.getElementById('cMessage').value.trim();
+    var website = document.getElementById('cWebsite').value.trim();
     var err = document.getElementById('cFormErr');
+    var success = document.getElementById('cSuccessWrap');
 
     if(!nom || !tel || !msg){
+      err.textContent = 'Merci de renseigner votre nom, votre téléphone et votre message.';
+      err.classList.add('show');
+      err.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      err.textContent = 'Merci de vérifier votre adresse e-mail.';
       err.classList.add('show');
       err.scrollIntoView({behavior:'smooth', block:'center'});
       return;
     }
     err.classList.remove('show');
+    btn.disabled = true;
+    btn.classList.add('is-loading');
+    btn.querySelector('span').textContent = '…';
 
-    document.getElementById('cSuccessName').textContent = nom;
-    document.getElementById('cformWrap').style.display = 'none';
-    document.getElementById('cSuccessWrap').style.display = 'block';
-    document.getElementById('cSuccessWrap').scrollIntoView({behavior:'smooth', block:'start'});
+    try {
+      var response = await fetch('https://diamabv.cluster129.hosting.ovh.net/contact.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify({
+          nom: nom,
+          telephone: document.getElementById('cPhoneCode').textContent + ' ' + tel,
+          email: email,
+          sujet: sujet,
+          message: msg,
+          website: website
+        })
+      });
+      var data = await response.json();
+      if(!response.ok || !data.success) throw new Error(data.message || 'Erreur lors de l’envoi.');
+
+      document.getElementById('cSuccessName').textContent = nom;
+      document.getElementById('cformWrap').style.display = 'none';
+      success.style.display = 'block';
+      success.scrollIntoView({behavior:'smooth', block:'start'});
+    } catch(e) {
+      err.textContent = 'Impossible d’envoyer le message pour le moment. Merci de réessayer ou de nous contacter directement par e-mail.';
+      err.classList.add('show');
+      err.scrollIntoView({behavior:'smooth', block:'center'});
+      btn.disabled = false;
+      btn.classList.remove('is-loading');
+      btn.querySelector('span').textContent = '→';
+    }
   });
 })();
 </script>
