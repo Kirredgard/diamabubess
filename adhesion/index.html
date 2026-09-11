@@ -153,23 +153,9 @@
 
       <div class="jf-success" id="successWrap" style="display:none">
         <div class="ok">✓</div>
-        <h2>Bienvenue dans le mouvement !</h2>
-        <p>Votre adhésion a bien été enregistrée. Vous recevrez prochainement votre carte de militant Diama bu bess ainsi que les prochaines informations du mouvement.</p>
-
-        <div class="jf-card">
-          <div class="jf-card-top">
-            <span class="mk"><img src="../assets/logo22-mark.png" alt=""></span>
-            <div><small>Carte de militant</small><b>Diama bu bess</b></div>
-          </div>
-          <div class="jf-card-name" id="cardName">Fatou Ndiaye</div>
-          <div class="jf-card-role">Militant(e) — ak Abdourahmane FALL</div>
-          <div class="jf-card-row">
-            <div><span>Commune</span><b id="cardCommune">—</b></div>
-            <div><span>Téléphone</span><b id="cardTel">—</b></div>
-            <div><span>N° adhérent</span><b id="cardId">—</b></div>
-          </div>
-        </div>
-
+        <h2>Demande d’adhésion bien reçue !</h2>
+        <p>Merci pour votre demande d’adhésion à Diama bu bess. Vos informations ont bien été transmises à notre équipe.</p>
+        <p class="jf-confirmation-email" id="confirmationEmailText">Nous allons examiner votre demande et vous recontacter prochainement.</p>
         <a class="btn primary" href="/" style="margin-top:24px">Retour à l'accueil <span>→</span></a>
       </div>
 
@@ -342,13 +328,14 @@
       var result = await response.json();
       if(!response.ok || !result.success) throw new Error(result.message || 'Erreur lors de l’envoi.');
 
-      document.getElementById('cardName').textContent = (prenom + ' ' + nom).trim() || 'Militant(e)';
-      document.getElementById('cardCommune').textContent = communeFinale || '—';
-      document.getElementById('cardTel').textContent = indicatif + ' ' + (tel || '—');
-      document.getElementById('cardId').textContent = 'DBB-' + Math.floor(10000 + Math.random()*89999);
-
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successWrap').style.display = 'block';
+      var confirmationText = document.getElementById('confirmationEmailText');
+      if(email){
+        confirmationText.textContent = 'Un e-mail de confirmation vient également de vous être envoyé à ' + email + '.';
+      } else {
+        confirmationText.textContent = 'Aucun e-mail n’a été renseigné. Notre équipe vous recontactera par les coordonnées indiquées.';
+      }
       document.getElementById('successWrap').scrollIntoView({behavior:'smooth', block:'start'});
     } catch(e) {
       err.textContent = 'Impossible d’envoyer l’adhésion pour le moment. Vérifiez votre connexion puis réessayez.';

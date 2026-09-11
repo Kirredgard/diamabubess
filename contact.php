@@ -90,14 +90,34 @@ if ($type === 'adhesion') {
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
     $headers .= $email !== '' ? "Reply-To: {$email}\r\n" : "Reply-To: contact@diamabubess.sn\r\n";
 
-    $sent = mail($to = 'contact@diamabubess.sn', '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers);
+    $adminTo = 'contact@diamabubess.sn';
+    $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $sent = mail($adminTo, $encodedSubject, $body, $headers);
     if (!$sent) {
         http_response_code(500);
         echo json_encode(['success'=>false,'message'=>'Le serveur n’a pas pu envoyer la demande d’adhésion.']);
         exit;
     }
 
-    echo json_encode(['success'=>true]);
+    // Accusé de réception automatique au demandeur, si une adresse e-mail valide a été fournie.
+    $confirmationSent = false;
+    if ($email !== '') {
+        $replySubject = 'Votre demande d’adhésion — Diama Bu Bess';
+        $replyBody = "Bonjour {$prenom},\n\n";
+        $replyBody .= "Nous vous remercions pour votre demande d’adhésion à Diama Bu Bess.\n\n";
+        $replyBody .= "Votre demande a bien été reçue par notre équipe. Nous allons l’examiner et vous recontacter prochainement avec les prochaines informations concernant votre adhésion.\n\n";
+        $replyBody .= "À bientôt,\n";
+        $replyBody .= "L’équipe Diama Bu Bess\n";
+        $replyBody .= "contact@diamabubess.sn\n";
+
+        $replyHeaders = "From: Diama Bu Bess <contact@diamabubess.sn>\r\n";
+        $replyHeaders .= "Reply-To: contact@diamabubess.sn\r\n";
+        $replyHeaders .= "MIME-Version: 1.0\r\n";
+        $replyHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $confirmationSent = mail($email, '=?UTF-8?B?' . base64_encode($replySubject) . '?=', $replyBody, $replyHeaders);
+    }
+
+    echo json_encode(['success'=>true, 'confirmation_sent'=>$confirmationSent]);
     exit;
 }
 
@@ -135,4 +155,22 @@ if (!$sent) {
     exit;
 }
 
-echo json_encode(['success'=>true]);
+// Accusé de réception automatique au visiteur, si une adresse e-mail valide a été fournie.
+$confirmationSent = false;
+if ($email !== '') {
+    $replySubject = 'Nous avons bien reçu votre message — Diama Bu Bess';
+    $replyBody = "Bonjour {$nom},\n\n";
+    $replyBody .= "Nous vous remercions d’avoir contacté Diama Bu Bess.\n\n";
+    $replyBody .= "Votre message a bien été reçu par notre équipe. Nous vous recontacterons dans les meilleurs délais.\n\n";
+    $replyBody .= "À bientôt,\n";
+    $replyBody .= "L’équipe Diama Bu Bess\n";
+    $replyBody .= "contact@diamabubess.sn\n";
+
+    $replyHeaders = "From: Diama Bu Bess <contact@diamabubess.sn>\r\n";
+    $replyHeaders .= "Reply-To: contact@diamabubess.sn\r\n";
+    $replyHeaders .= "MIME-Version: 1.0\r\n";
+    $replyHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $confirmationSent = mail($email, '=?UTF-8?B?' . base64_encode($replySubject) . '?=', $replyBody, $replyHeaders);
+}
+
+echo json_encode(['success'=>true, 'confirmation_sent'=>$confirmationSent]);
