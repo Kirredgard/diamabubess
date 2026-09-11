@@ -26,23 +26,20 @@
   });
 })();
 
-/* Active navigation: robust on local files, subfolders and web hosting. */
+/* Active navigation: one active item per page, including clean URLs with trailing slashes. */
 (function(){
-  var current = (window.location.pathname || '').split('/').filter(Boolean).pop() || '';
-  current = current.toLowerCase();
-  if (current === 'index.html' || current === 'index') current = '';
-  if (/\.html?$/.test(current)) current = current.replace(/\.html?$/, '');
+  function normalizePath(value){
+    value = (value || '').split('#')[0].split('?')[0];
+    value = value.replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+    if (!value || value === 'index' || value === 'index.html') return '';
+    value = value.replace(/\.html?$/i, '');
+    return value.split('/').filter(Boolean).pop().toLowerCase();
+  }
+
+  var current = normalizePath(window.location.pathname || '');
 
   document.querySelectorAll('.nav-panel nav a').forEach(function(link){
-    var href = (link.getAttribute('href') || '').split('#')[0].split('?')[0].split('/').pop().toLowerCase();
-    if (/\.html?$/.test(href)) href = href.replace(/\.html?$/, '');
-    if (href === 'index') href = '';
-    if (!href) {
-      link.classList.toggle('active', current === '');
-      if (current === '') link.setAttribute('aria-current','page');
-      else link.removeAttribute('aria-current');
-      return;
-    }
+    var href = normalizePath(link.getAttribute('href') || '');
     var isActive = href === current;
     link.classList.toggle('active', isActive);
     if (isActive) link.setAttribute('aria-current','page');
