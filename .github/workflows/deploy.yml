@@ -21,8 +21,7 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           uploads: |
-          uploads: |
-  ./ => ./www/
+            ./ => /home/diamabv/www/
           ignore: |
             .git/**
             .github/**
