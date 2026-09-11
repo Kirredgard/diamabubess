@@ -13,6 +13,18 @@ jobs:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
+      - name: Installer Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: false
+
+      - name: Installer Jekyll
+        run: gem install jekyll
+
+      - name: Construire le site Jekyll
+        run: jekyll build
+
       - name: Installer lftp
         run: |
           sudo apt-get update
@@ -32,7 +44,6 @@ jobs:
           mirror --reverse --verbose \
             --exclude-glob .git/** \
             --exclude-glob .github/** \
-            --exclude-glob README.md \
-            ./ .
+            ./_site/ .
           bye
           EOF
