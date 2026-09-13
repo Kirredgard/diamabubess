@@ -40,11 +40,11 @@
     <h2>Envoyez-nous un message</h2>
     <p class="cf-lead">Nous vous répondons dans les meilleurs délais, du lundi au samedi.</p>
 
-    <form id="contactForm" novalidate>
+    <form id="contactForm" action="https://diamabv.cluster129.hosting.ovh.net/contact.php" method="POST" target="contactSubmitFrame" novalidate>
       <div id="cformWrap">
 
         <div class="jf-row">
-          <div class="jf-field"><label>Nom complet <small>*</small></label><input type="text" id="cNom" placeholder="Votre prénom et nom" required></div>
+          <div class="jf-field"><label>Nom complet <small>*</small></label><input type="text" id="cNom" name="nom" placeholder="Votre prénom et nom" required></div>
           <div class="jf-field">
             <label>Téléphone <small>*</small></label>
             <div class="phone-combo" id="cPhoneCombo">
@@ -63,10 +63,10 @@
         </div>
 
         <div class="jf-row">
-          <div class="jf-field"><label>Adresse e-mail <span class="jf-hint">Optionnel</span></label><input type="email" id="cEmail" placeholder="vous@exemple.com"></div>
+          <div class="jf-field"><label>Adresse e-mail <span class="jf-hint">Optionnel</span></label><input type="email" id="cEmail" name="email" placeholder="vous@exemple.com"></div>
           <div class="jf-field">
             <label>Sujet</label>
-            <select class="jf-select" id="cSujet">
+            <select class="jf-select" id="cSujet" name="sujet">
               <option value="Question générale" selected>Question générale</option>
               <option value="Proposition ou suggestion">Proposition ou suggestion</option>
               <option value="Participer à une action">Participer à une action</option>
@@ -78,16 +78,16 @@
 
         <div class="jf-field" style="margin-bottom:0">
           <label>Message <small>*</small></label>
-          <textarea id="cMessage" rows="4" placeholder="Écrivez votre message ici…" required></textarea>
+          <textarea id="cMessage" name="message" rows="4" placeholder="Écrivez votre message ici…" required></textarea>
         </div>
 
-        <input type="text" id="cWebsite" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+        <input type="hidden" name="type" value="contact"><input type="hidden" name="telephone" id="cTelephone"><input type="text" id="cWebsite" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
 
         <p class="jf-error" id="cFormErr">Merci de renseigner votre nom, votre téléphone et votre message.</p>
 
         <p class="jf-consent">En envoyant ce message, vous acceptez d'être recontacté(e) par Diama bu bess. Vos informations restent confidentielles.</p>
 
-        <button type="button" id="cSubmitBtn" class="jf-submit">Envoyer le message <span>→</span></button>
+        <button type="submit" id="cSubmitBtn" class="jf-submit">Envoyer le message <span>→</span></button>
 
       </div>
 
@@ -99,6 +99,7 @@
         <a class="btn primary" href="/" style="margin-top:8px">Retour à l'accueil <span>→</span></a>
       </div>
     </form>
+    <iframe name="contactSubmitFrame" id="contactSubmitFrame" title="Envoi du formulaire" aria-hidden="true" style="position:absolute;width:1px;height:1px;border:0;opacity:0;pointer-events:none"></iframe>
   </div>
 
 </div></section>
@@ -178,8 +179,14 @@
   document.addEventListener('click', function(){ panel.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); });
   renderList('');
 
-  document.getElementById('cSubmitBtn').addEventListener('click', async function(){
-    var btn = this;
+  var contactForm = document.getElementById('contactForm');
+  var submitFrame = document.getElementById('contactSubmitFrame');
+  var submitting = false;
+
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(submitting) return;
+    var btn = document.getElementById('cSubmitBtn');
     var nom = document.getElementById('cNom').value.trim();
     var tel = document.getElementById('cTel').value.trim();
     var email = document.getElementById('cEmail').value.trim();
@@ -202,38 +209,34 @@
       return;
     }
     err.classList.remove('show');
+    document.getElementById('cTelephone').value = document.getElementById('cPhoneCode').textContent + ' ' + tel;
+    submitting = true;
     btn.disabled = true;
     btn.classList.add('is-loading');
     btn.querySelector('span').textContent = '…';
 
-    try {
-      var response = await fetch('https://diamabv.cluster129.hosting.ovh.net/contact.php', {
-        method: 'POST',
-        headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-        mode: 'cors',
-        body: new URLSearchParams({
-          nom: nom,
-          telephone: document.getElementById('cPhoneCode').textContent + ' ' + tel,
-          email: email,
-          sujet: sujet,
-          message: msg,
-          website: website
-        })
-      });
-      var data = await response.json();
-      if(!response.ok || !data.success) throw new Error(data.message || 'Erreur lors de l’envoi.');
+    // Envoi HTML natif dans une iframe cachée : plus compatible avec Safari/iPhone
+    contactForm.submit();
+  });
 
-      document.getElementById('cSuccessName').textContent = nom;
-      document.getElementById('cformWrap').style.display = 'none';
-      success.style.display = 'block';
-      success.scrollIntoView({behavior:'smooth', block:'start'});
-    } catch(e) {
-      err.textContent = 'Impossible d’envoyer le message pour le moment. Merci de réessayer ou de nous contacter directement par e-mail.';
-      err.classList.add('show');
-      err.scrollIntoView({behavior:'smooth', block:'center'});
-      btn.disabled = false;
-      btn.classList.remove('is-loading');
-      btn.querySelector('span').textContent = '→';
+  window.addEventListener('message', function(event){
+    if(event.data && event.data.source === 'diama-contact'){
+      var btn = document.getElementById('cSubmitBtn');
+      var err = document.getElementById('cFormErr');
+      var success = document.getElementById('cSuccessWrap');
+      if(event.data.success){
+        document.getElementById('cSuccessName').textContent = document.getElementById('cNom').value.trim();
+        document.getElementById('cformWrap').style.display = 'none';
+        success.style.display = 'block';
+        success.scrollIntoView({behavior:'smooth', block:'start'});
+      } else {
+        err.textContent = event.data.message || 'Impossible d’envoyer le message pour le moment. Merci de réessayer ou de nous contacter directement par e-mail.';
+        err.classList.add('show');
+        btn.disabled = false;
+        btn.classList.remove('is-loading');
+        btn.querySelector('span').textContent = '→';
+        submitting = false;
+      }
     }
   });
 })();
