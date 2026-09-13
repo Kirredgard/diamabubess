@@ -452,3 +452,9 @@ body.nav-open{overflow:hidden}
 
 /* Confirmation après envoi du formulaire Contact */
 .jf-success-note{margin:0 auto 14px;max-width:620px;line-height:1.7;color:var(--muted);}
+
+/* Ajustement : réduire la hauteur de la photo À la une sur la page Actualités */
+.news-card-featured{min-height:270px}
+.news-card-featured .news-card-image{min-height:270px}
+@media(max-width:1000px){.news-card-featured .news-card-image{min-height:250px}}
+@media(max-width:700px){.news-card-image{height:220px;min-height:0}.news-card-featured .news-card-image{min-height:220px}}

@@ -24,8 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$raw = file_get_contents('php://input');
-$data = json_decode($raw, true);
+$contentType = strtolower($_SERVER['CONTENT_TYPE'] ?? '');
+if (strpos($contentType, 'application/json') !== false) {
+    $data = json_decode(file_get_contents('php://input'), true);
+} else {
+    // Les formulaires du site utilisent application/x-www-form-urlencoded :
+    // cela évite le pré-vol CORS (OPTIONS), notamment sur Safari/iPhone.
+    $data = $_POST;
+}
 if (!is_array($data)) {
     http_response_code(400);
     echo json_encode(['success'=>false,'message'=>'Données invalides.']);

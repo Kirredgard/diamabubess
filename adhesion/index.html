@@ -310,8 +310,8 @@
     try {
       var response = await fetch('https://diamabv.cluster129.hosting.ovh.net/contact.php', {
         method: 'POST',
-        headers: {'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify({
+        headers: {'Accept':'application/json'},
+        body: new URLSearchParams({
           type: 'adhesion',
           prenom: prenom,
           nom: nom,
