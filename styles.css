@@ -458,3 +458,11 @@ body.nav-open{overflow:hidden}
 .news-card-featured .news-card-image{min-height:270px}
 @media(max-width:1000px){.news-card-featured .news-card-image{min-height:250px}}
 @media(max-width:700px){.news-card-image{height:220px;min-height:0}.news-card-featured .news-card-image{min-height:220px}}
+
+
+/* v14 — À la une : hauteur fixe pour éviter que l'image s'étire */
+.news-card-featured{height:260px;min-height:0;overflow:hidden}
+.news-card-featured .news-card-image{height:260px;min-height:0}
+.news-card-featured .news-card-image img{height:260px;min-height:0;object-fit:cover}
+@media(max-width:1000px){.news-card-featured{height:250px}.news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:250px;min-height:0}}
+@media(max-width:700px){.news-card-featured{height:auto;min-height:0}.news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:210px;min-height:0}}
