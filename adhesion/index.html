@@ -48,7 +48,13 @@
       <div class="step"><span class="dot">2</span><span class="lbl">Engagement</span></div>
     </div>
 
-    <form id="joinForm" novalidate>
+    <form id="joinForm" action="https://diamabv.cluster129.hosting.ovh.net/contact.php" method="POST" novalidate>
+      <input type="hidden" name="type" value="adhesion">
+      <input type="hidden" name="return_to" value="https://diamabubess.sn/adhesion/">
+      <input type="hidden" name="telephone" id="fTelephone">
+      <input type="hidden" name="residence" id="fResidence">
+      <input type="hidden" name="residence_type" id="fResidenceType">
+      <input type="hidden" name="commune_militantisme" id="fCommuneFinale">
 
       <div id="formWrap">
 
@@ -56,8 +62,8 @@
         <div class="jf-section-title"><i>1</i><b>VOS COORDONNÉES</b></div>
 
         <div class="jf-row">
-          <div class="jf-field"><label>Prénom <small>*</small></label><input type="text" id="fPrenom" placeholder="Fatou" required></div>
-          <div class="jf-field"><label>Nom <small>*</small></label><input type="text" id="fNom" placeholder="Ndiaye" required></div>
+          <div class="jf-field"><label>Prénom <small>*</small></label><input type="text" id="fPrenom" name="prenom" placeholder="Fatou" required></div>
+          <div class="jf-field"><label>Nom <small>*</small></label><input type="text" id="fNom" name="nom" placeholder="Ndiaye" required></div>
         </div>
 
         <div class="jf-field">
@@ -76,7 +82,7 @@
           </div>
         </div>
 
-        <div class="jf-field"><label>Adresse e-mail <span class="jf-hint">Optionnel</span></label><input type="email" id="fEmail" placeholder="vous@exemple.com"></div>
+        <div class="jf-field"><label>Adresse e-mail <span class="jf-hint">Optionnel</span></label><input type="email" id="fEmail" name="email" placeholder="vous@exemple.com"></div>
 
         <div class="jf-field" style="margin-bottom:0">
           <label>Lieu de résidence <small>*</small><span class="jf-hint">Sénégal : commune · Étranger : pays puis ville</span></label>
@@ -127,10 +133,10 @@
         <div class="jf-section-title"><i>2</i><b>VOTRE ENGAGEMENT</b></div>
 
         <div class="jf-row">
-          <div class="jf-field"><label>Profession / activité</label><input type="text" id="fProfession" placeholder="Ex : enseignant, commerçante, étudiant…"></div>
+          <div class="jf-field"><label>Profession / activité</label><input type="text" id="fProfession" name="profession" placeholder="Ex : enseignant, commerçante, étudiant…"></div>
           <div class="jf-field">
             <label>Réception de la carte</label>
-            <select id="fMode">
+            <select id="fMode" name="mode_carte">
               <option value="email">Par e-mail (carte numérique)</option>
               <option value="retrait">Retrait en permanence à Diama</option>
             </select>
@@ -139,7 +145,7 @@
 
         <div class="jf-field" style="margin-bottom:0">
           <label>Message ou motivation <span class="jf-hint">Optionnel</span></label>
-          <textarea id="fMessage" rows="3" placeholder="Pourquoi souhaitez-vous rejoindre Diama bu bess ?"></textarea>
+          <textarea id="fMessage" name="message" rows="3" placeholder="Pourquoi souhaitez-vous rejoindre Diama bu bess ?"></textarea>
         </div>
       </div>
 
@@ -147,7 +153,7 @@
 
       <p class="jf-consent">En soumettant ce formulaire, vous acceptez d'être contacté(e) par Diama bu bess concernant votre adhésion et les activités du mouvement. Vos informations restent confidentielles.</p>
 
-      <button type="button" id="submitBtn" class="jf-submit">Confirmer mon adhésion <span>→</span></button>
+      <button type="submit" id="submitBtn" class="jf-submit">Confirmer mon adhésion <span>→</span></button>
 
       </div>
 
@@ -260,8 +266,10 @@
     document.getElementById('autreCommuneWrap').classList.toggle('show', e.target.checked);
   });
 
-  document.getElementById('submitBtn').addEventListener('click', async function(){
-    var btn = this;
+  var joinForm = document.getElementById('joinForm');
+  joinForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = document.getElementById('submitBtn');
     var prenom = document.getElementById('fPrenom').value.trim();
     var nom = document.getElementById('fNom').value.trim();
     var indicatif = codeEl.textContent;
@@ -302,51 +310,35 @@
       ? document.getElementById('fCommuneMilitantisme').value.trim()
       : lieu;
 
+    document.getElementById('fTelephone').value = indicatif + ' ' + tel;
+    document.getElementById('fResidence').value = lieu;
+    document.getElementById('fResidenceType').value = residenceType === 'senegal' ? 'Sénégal' : 'Diaspora';
+    document.getElementById('fCommuneFinale').value = communeFinale;
+
     btn.disabled = true;
     btn.classList.add('is-loading');
-    var originalLabel = btn.innerHTML;
     btn.innerHTML = 'Envoi en cours…';
 
-    try {
-      var response = await fetch('https://diamabv.cluster129.hosting.ovh.net/contact.php', {
-        method: 'POST',
-        headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-        mode: 'cors',
-        body: new URLSearchParams({
-          type: 'adhesion',
-          prenom: prenom,
-          nom: nom,
-          telephone: indicatif + ' ' + tel,
-          email: email,
-          residence: lieu,
-          residence_type: residenceType === 'senegal' ? 'Sénégal' : 'Diaspora',
-          commune_militantisme: document.getElementById('fAutreCommune').checked ? document.getElementById('fCommuneMilitantisme').value.trim() : '',
-          profession: profession,
-          mode_carte: mode,
-          message: message
-        })
-      });
-      var result = await response.json();
-      if(!response.ok || !result.success) throw new Error(result.message || 'Erreur lors de l’envoi.');
-
-      document.getElementById('formWrap').style.display = 'none';
-      document.getElementById('successWrap').style.display = 'block';
-      var confirmationText = document.getElementById('confirmationEmailText');
-      if(email){
-        confirmationText.textContent = 'Un e-mail de confirmation vient également de vous être envoyé à ' + email + '.';
-      } else {
-        confirmationText.textContent = 'Aucun e-mail n’a été renseigné. Notre équipe vous recontactera par les coordonnées indiquées.';
-      }
-      document.getElementById('successWrap').scrollIntoView({behavior:'smooth', block:'start'});
-    } catch(e) {
-      err.textContent = 'Impossible d’envoyer l’adhésion pour le moment. Vérifiez votre connexion puis réessayez.';
-      err.classList.add('show');
-      err.scrollIntoView({behavior:'smooth', block:'center'});
-      btn.disabled = false;
-      btn.classList.remove('is-loading');
-      btn.innerHTML = originalLabel;
-    }
+    // Envoi POST natif en navigation principale : pas de fetch/CORS,
+    // donc compatible avec Safari/iPhone, Firefox, Chrome, etc.
+    HTMLFormElement.prototype.submit.call(joinForm);
   });
+
+  var params = new URLSearchParams(window.location.search);
+  if(params.get('sent') === '1'){
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('successWrap').style.display = 'block';
+    var confirmationText = document.getElementById('confirmationEmailText');
+    if(params.get('email')){
+      confirmationText.textContent = 'Votre demande a bien été reçue. Un e-mail de confirmation a été envoyé à ' + params.get('email') + ' si l’adresse est valide.';
+    } else {
+      confirmationText.textContent = 'Aucun e-mail n’a été renseigné. Notre équipe vous recontactera par les coordonnées indiquées.';
+    }
+  } else if(params.get('sent') === '0'){
+    var err = document.getElementById('formErr');
+    err.textContent = params.get('error') || 'Impossible d’envoyer l’adhésion pour le moment. Merci de réessayer.';
+    err.classList.add('show');
+  }
 })();
 </script>
 </body></html>

@@ -40,7 +40,8 @@
     <h2>Envoyez-nous un message</h2>
     <p class="cf-lead">Nous vous répondons dans les meilleurs délais, du lundi au samedi.</p>
 
-    <form id="contactForm" action="https://diamabv.cluster129.hosting.ovh.net/contact.php" method="POST" target="contactSubmitFrame" novalidate>
+    <form id="contactForm" action="https://diamabv.cluster129.hosting.ovh.net/contact.php" method="POST" novalidate>
+      <input type="hidden" name="return_to" value="https://diamabubess.sn/contact/">
       <div id="cformWrap">
 
         <div class="jf-row">
@@ -99,7 +100,6 @@
         <a class="btn primary" href="/" style="margin-top:8px">Retour à l'accueil <span>→</span></a>
       </div>
     </form>
-    <iframe name="contactSubmitFrame" id="contactSubmitFrame" title="Envoi du formulaire" aria-hidden="true" style="position:absolute;width:1px;height:1px;border:0;opacity:0;pointer-events:none"></iframe>
   </div>
 
 </div></section>
@@ -180,42 +180,8 @@
   renderList('');
 
   var contactForm = document.getElementById('contactForm');
-  var submitFrame = document.getElementById('contactSubmitFrame');
-  var submitting = false;
-  var submitStarted = false;
-  var submitFallbackTimer = null;
-
-  function finishContactSuccess(){
-    if(!submitting) return;
-    submitting = false;
-    if(submitFallbackTimer) clearTimeout(submitFallbackTimer);
-    var btn = document.getElementById('cSubmitBtn');
-    var success = document.getElementById('cSuccessWrap');
-    document.getElementById('cSuccessName').textContent = document.getElementById('cNom').value.trim();
-    document.getElementById('cformWrap').style.display = 'none';
-    success.style.display = 'block';
-    success.scrollIntoView({behavior:'smooth', block:'start'});
-    btn.disabled = false;
-    btn.classList.remove('is-loading');
-    btn.querySelector('span').textContent = '→';
-  }
-
-  function finishContactError(message){
-    if(!submitting) return;
-    submitting = false;
-    if(submitFallbackTimer) clearTimeout(submitFallbackTimer);
-    var btn = document.getElementById('cSubmitBtn');
-    var err = document.getElementById('cFormErr');
-    err.textContent = message || 'Impossible d’envoyer le message pour le moment. Merci de réessayer ou de nous contacter directement par e-mail.';
-    err.classList.add('show');
-    btn.disabled = false;
-    btn.classList.remove('is-loading');
-    btn.querySelector('span').textContent = '→';
-  }
-
   contactForm.addEventListener('submit', function(e){
     e.preventDefault();
-    if(submitting) return;
     var btn = document.getElementById('cSubmitBtn');
     var nom = document.getElementById('cNom').value.trim();
     var tel = document.getElementById('cTel').value.trim();
@@ -237,41 +203,26 @@
     }
     err.classList.remove('show');
     document.getElementById('cTelephone').value = document.getElementById('cPhoneCode').textContent + ' ' + tel;
-    submitting = true;
-    submitStarted = false;
     btn.disabled = true;
     btn.classList.add('is-loading');
     btn.querySelector('span').textContent = '…';
 
-    // Envoi HTML natif dans une iframe cachée. On conserve postMessage,
-    // avec un fallback sur l'événement load pour Safari/iPhone/Firefox.
-    submitStarted = true;
-    contactForm.submit();
-    submitFallbackTimer = setTimeout(function(){
-      // Si OVH a traité la requête mais que le postMessage est bloqué par le navigateur,
-      // l'envoi est considéré comme réussi après ce délai.
-      if(submitting) finishContactSuccess();
-    }, 8000);
+    // Envoi POST natif en navigation principale : fonctionne sur Chrome,
+    // Safari/iPhone, Firefox et autres navigateurs sans CORS ni iframe.
+    HTMLFormElement.prototype.submit.call(contactForm);
   });
 
-  submitFrame.addEventListener('load', function(){
-    // Le premier chargement de l'iframe est ignoré. Après l'envoi, le chargement
-    // de la réponse OVH sert de secours lorsque postMessage n'est pas délivré.
-    if(!submitStarted || !submitting) return;
-    setTimeout(function(){
-      if(submitting) finishContactSuccess();
-    }, 150);
-  });
-
-  window.addEventListener('message', function(event){
-    if(event.data && event.data.source === 'diama-contact'){
-      if(event.data.success){
-        finishContactSuccess();
-      } else {
-        finishContactError(event.data.message);
-      }
-    }
-  });
+  // Le PHP redirige vers /contact/?sent=1 après traitement.
+  var params = new URLSearchParams(window.location.search);
+  if(params.get('sent') === '1'){
+    document.getElementById('cSuccessName').textContent = params.get('name') || '';
+    document.getElementById('cformWrap').style.display = 'none';
+    document.getElementById('cSuccessWrap').style.display = 'block';
+  } else if(params.get('sent') === '0'){
+    var err = document.getElementById('cFormErr');
+    err.textContent = params.get('error') || 'Impossible d’envoyer le message pour le moment. Merci de réessayer.';
+    err.classList.add('show');
+  }
 })();
 </script>
 </body></html>
