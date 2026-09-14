@@ -467,22 +467,22 @@ body.nav-open{overflow:hidden}
 @media(max-width:1000px){.news-card-featured{height:250px}.news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:250px;min-height:0}}
 @media(max-width:700px){.news-card-featured{height:auto;min-height:0}.news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:210px;min-height:0}}
 
-/* v15 — cohérence des cartes À la une */
-.news-card-featured{height:280px;min-height:0;overflow:hidden}
-.news-card-featured .news-card-image{height:280px;min-height:0}
-.news-card-featured .news-card-image img{height:280px;min-height:0;object-fit:cover}
-.home-news-card{height:280px;min-height:0}
-.home-news-media{height:280px;min-height:0}
-.home-news-media .news-card-video-placeholder{height:280px;min-height:0}
+/* v16 — hauteur harmonisée des cartes À la une */
+.news-card-featured{height:300px;min-height:0;overflow:hidden}
+.news-card-featured .news-card-image{height:300px;min-height:0}
+.news-card-featured .news-card-image img{height:300px;min-height:0;object-fit:cover}
+.home-news-card{height:300px;min-height:0}
+.home-news-media{height:300px;min-height:0}
+.home-news-media .news-card-video-placeholder{height:300px;min-height:0}
 @media(max-width:1000px){
-  .news-card-featured{height:260px}
-  .news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:260px}
-  .home-news-card{height:260px}
-  .home-news-media,.home-news-media .news-card-video-placeholder{height:260px}
+  .news-card-featured{height:280px}
+  .news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:280px}
+  .home-news-card{height:280px}
+  .home-news-media,.home-news-media .news-card-video-placeholder{height:280px}
 }
 @media(max-width:700px){
   .news-card-featured{height:auto;min-height:0}
-  .news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:230px;min-height:0}
+  .news-card-featured .news-card-image,.news-card-featured .news-card-image img{height:245px;min-height:0}
   .home-news-card{height:auto;min-height:0}
-  .home-news-media,.home-news-media .news-card-video-placeholder{height:230px;min-height:0}
+  .home-news-media,.home-news-media .news-card-video-placeholder{height:245px;min-height:0}
 }

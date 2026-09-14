@@ -182,6 +182,36 @@
   var contactForm = document.getElementById('contactForm');
   var submitFrame = document.getElementById('contactSubmitFrame');
   var submitting = false;
+  var submitStarted = false;
+  var submitFallbackTimer = null;
+
+  function finishContactSuccess(){
+    if(!submitting) return;
+    submitting = false;
+    if(submitFallbackTimer) clearTimeout(submitFallbackTimer);
+    var btn = document.getElementById('cSubmitBtn');
+    var success = document.getElementById('cSuccessWrap');
+    document.getElementById('cSuccessName').textContent = document.getElementById('cNom').value.trim();
+    document.getElementById('cformWrap').style.display = 'none';
+    success.style.display = 'block';
+    success.scrollIntoView({behavior:'smooth', block:'start'});
+    btn.disabled = false;
+    btn.classList.remove('is-loading');
+    btn.querySelector('span').textContent = '→';
+  }
+
+  function finishContactError(message){
+    if(!submitting) return;
+    submitting = false;
+    if(submitFallbackTimer) clearTimeout(submitFallbackTimer);
+    var btn = document.getElementById('cSubmitBtn');
+    var err = document.getElementById('cFormErr');
+    err.textContent = message || 'Impossible d’envoyer le message pour le moment. Merci de réessayer ou de nous contacter directement par e-mail.';
+    err.classList.add('show');
+    btn.disabled = false;
+    btn.classList.remove('is-loading');
+    btn.querySelector('span').textContent = '→';
+  }
 
   contactForm.addEventListener('submit', function(e){
     e.preventDefault();
@@ -190,11 +220,8 @@
     var nom = document.getElementById('cNom').value.trim();
     var tel = document.getElementById('cTel').value.trim();
     var email = document.getElementById('cEmail').value.trim();
-    var sujet = document.getElementById('cSujet').value;
     var msg = document.getElementById('cMessage').value.trim();
-    var website = document.getElementById('cWebsite').value.trim();
     var err = document.getElementById('cFormErr');
-    var success = document.getElementById('cSuccessWrap');
 
     if(!nom || !tel || !msg){
       err.textContent = 'Merci de renseigner votre nom, votre téléphone et votre message.';
@@ -211,31 +238,37 @@
     err.classList.remove('show');
     document.getElementById('cTelephone').value = document.getElementById('cPhoneCode').textContent + ' ' + tel;
     submitting = true;
+    submitStarted = false;
     btn.disabled = true;
     btn.classList.add('is-loading');
     btn.querySelector('span').textContent = '…';
 
-    // Envoi HTML natif dans une iframe cachée : plus compatible avec Safari/iPhone
+    // Envoi HTML natif dans une iframe cachée. On conserve postMessage,
+    // avec un fallback sur l'événement load pour Safari/iPhone/Firefox.
+    submitStarted = true;
     contactForm.submit();
+    submitFallbackTimer = setTimeout(function(){
+      // Si OVH a traité la requête mais que le postMessage est bloqué par le navigateur,
+      // l'envoi est considéré comme réussi après ce délai.
+      if(submitting) finishContactSuccess();
+    }, 8000);
+  });
+
+  submitFrame.addEventListener('load', function(){
+    // Le premier chargement de l'iframe est ignoré. Après l'envoi, le chargement
+    // de la réponse OVH sert de secours lorsque postMessage n'est pas délivré.
+    if(!submitStarted || !submitting) return;
+    setTimeout(function(){
+      if(submitting) finishContactSuccess();
+    }, 150);
   });
 
   window.addEventListener('message', function(event){
     if(event.data && event.data.source === 'diama-contact'){
-      var btn = document.getElementById('cSubmitBtn');
-      var err = document.getElementById('cFormErr');
-      var success = document.getElementById('cSuccessWrap');
       if(event.data.success){
-        document.getElementById('cSuccessName').textContent = document.getElementById('cNom').value.trim();
-        document.getElementById('cformWrap').style.display = 'none';
-        success.style.display = 'block';
-        success.scrollIntoView({behavior:'smooth', block:'start'});
+        finishContactSuccess();
       } else {
-        err.textContent = event.data.message || 'Impossible d’envoyer le message pour le moment. Merci de réessayer ou de nous contacter directement par e-mail.';
-        err.classList.add('show');
-        btn.disabled = false;
-        btn.classList.remove('is-loading');
-        btn.querySelector('span').textContent = '→';
-        submitting = false;
+        finishContactError(event.data.message);
       }
     }
   });
